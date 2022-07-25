@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbook.yaml"
     ansible.groups = {
-      "kubernetes" => ["masternode1", "workernode1", "workerpnode2"],
+      "kubernetes" => ["masternode1", "workernode1", "workernode2"],
       "master_root" => ["masternode1"],
       "masters" => ["masternode1", "masternode2"],
       "workers" => ["workernode1", "workernode2"],
