@@ -62,4 +62,5 @@ roles
 ### Passo 6
 
 Execute a playbook. 
-> 
+
+> ansible-playbook -u vagrant -i inventory kubernetes.yaml
