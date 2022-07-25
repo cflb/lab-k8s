@@ -17,7 +17,7 @@
     regexp: '.*{{ item.host }}$'
     line: "{{ item.ip }} {{ item.host }}.l4b {{ item.host }}"
     state: present
-  with_items: "{{ nash_intranet }}"
+  with_items: "{{ l4b_intranet }}"
 
 - name: creating /kubernetes/storage path
   shell: "mkdir -pv /kubernetes/storage"
