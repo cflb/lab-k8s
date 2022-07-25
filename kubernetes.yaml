@@ -6,5 +6,5 @@
     - role: kubernetes
   vars:
     tuned_policy: network-latency
-    kubernetes_master: 192.168.121.107
+    kubernetes_master: 192.168.121.161
     kubernetes_iface: "eth0"
