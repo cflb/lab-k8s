@@ -1,0 +1,26 @@
+---
+tuned_policy: network-latency
+
+common_packages:
+  - apparmor
+  - apparmor-utils
+  - gnupg
+  - gnupg1
+  - gnupg2
+  - ntp
+  - tuned
+  - fail2ban
+  - sysstat
+  - lsof
+  - dnsutils
+  - rsyslog
+  - bsd-mailx
+  - wget
+  - curl
+  - nfs-client
+  - rsync
+
+l4b_intranet_router_ip: 10.1.0.1
+l4b_intranet_network: 10.1.0.0/16
+l4b_intranet:
+  - { host: 'none', ip: 10.220.220.220 }

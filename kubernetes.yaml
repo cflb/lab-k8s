@@ -1,0 +1,10 @@
+---
+- hosts: kubernetes
+  become: yes
+  roles:
+    - role: common
+    - role: kubernetes
+  vars:
+    tuned_policy: network-latency
+    kubernetes_master: 192.168.121.107
+    kubernetes_iface: "eth0"

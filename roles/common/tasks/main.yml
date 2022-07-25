@@ -1,0 +1,26 @@
+---
+- name: apt - upgrade and install packages
+  include: apt.yml
+
+- name: hosts - build /etc/hosts file with public endpoints
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item }}.remote$'
+    line: "{{ hostvars[item].ansible_host }} {{item}}.remote"
+    state: present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups.all }}"
+
+- name: hosts - build /etc/hosts file with intranet endpoints
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item.host }}$'
+    line: "{{ item.ip }} {{ item.host }}.nash {{ item.host }}"
+    state: present
+  with_items: "{{ nash_intranet }}"
+
+- name: creating /kubernetes/storage path
+  shell: "mkdir -pv /kubernetes/storage"
+
+- name: tuned - machine performance and tuning
+  include: tuned.yml

@@ -1,0 +1,25 @@
+---
+#- name: waiting for master is up
+#  wait_for:
+#      host: "{{ kubernetes_master }}"
+#      port: "{{ kubernetes_apiserver_port }}"
+#      delay: 15
+#      timeout: 600
+#      state: started
+#      msg: "Kubernetes still not Listening"
+#  ignore_errors: true
+
+#- name: master - kubeadm - create token for workers
+#  shell: "ssh -q vagrant@{{ kubernetes_master }} kubeadm token create --print-join-command 2>/dev/null"
+#  register: kubernetes_join_cmd
+#
+#- name: master - kubeadm - set_fact kubernetes_join
+#  local_action: copy content="{{ kubernetes_join_cmd.stdout }}" dest="/tmp/kubernetes_token"
+#
+#- name: copy join command to nodes
+#  local_action: copy src="/tmp/kubernetes_token" dest="/tmp/kubernetes_token"
+#
+#- name: join this node on the cluster
+#  vars:
+#    kubernetes_join: "{{ lookup('file', '/tmp/kubernetes_token') }}"
+#  shell: " {{ kubernetes_join }} "
