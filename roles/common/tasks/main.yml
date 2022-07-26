@@ -1,4 +1,9 @@
 ---
+- name: configure name servers
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
+
 - name: apt - upgrade and install packages
   include: apt.yml
 

@@ -1,10 +1,11 @@
 ---
 - hosts: kubernetes
+  become_user: vagrant
   become: yes
   roles:
-    - role: common
+    #- role: common
     - role: kubernetes
   vars:
     tuned_policy: network-latency
-    kubernetes_master: 192.168.121.161
+    kubernetes_master: 192.168.121.38
     kubernetes_iface: "eth0"

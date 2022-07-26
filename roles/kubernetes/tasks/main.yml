@@ -2,7 +2,8 @@
 - include_tasks: setup.yml
 
 - include_tasks: master.yml
-  when: inventory_hostname == kubernetes_master
+  when: ansible_host == kubernetes_master
 
 - include_tasks: node.yml
   when: inventory_hostname in groups['workers']
+  

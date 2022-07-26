@@ -1,4 +1,8 @@
 ---
+- name: configure name servers
+  copy:
+    src: resolv.conf
+    dest: /etc/resolv.conf
 
 - name: copy k8s.mod.conf
   copy:

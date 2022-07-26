@@ -15,4 +15,4 @@ kubernetes_packages:
 
 kubernetes_iface: "eth0"
 kubernetes_apiserver_port: 6443
-kubernetes_master: 192.168.121.161
+kubernetes_master: 192.168.121.38
