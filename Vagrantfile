@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
     ansible.groups = {
       "kubernetes" => ["masternode1", "workernode1", "workernode2"],
       "master_root" => ["masternode1"],
-      "masters" => ["masternode1", "masternode2"],
+      "masters" => ["masternode1"],
       "workers" => ["workernode1", "workernode2"],
       #"router_root" => ["router1"],
       #"routers" => ["router1"],

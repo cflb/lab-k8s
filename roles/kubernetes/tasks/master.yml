@@ -4,7 +4,7 @@
 - name: master - kubeadm - init the cluster
   shell: "kubeadm init --control-plane-endpoint='{{ kubernetes_master }}:6443' --apiserver-advertise-address='{{ kubernetes_master }}' --pod-network-cidr='10.2.0.0/16' --service-cidr='10.20.0.0/16' --upload-certs"
   register: kubernetes_result
-  when: kubernetes_result is not defined and inventory_hostname == kubernetes_master
+  when: kubernetes_result is not defined and ansible_host == kubernetes_master
 
 - name: master - check if the result code of last task was true
   fail: msg="kubeadm init failed and we can't proceed, please check inside the machine."
@@ -21,13 +21,13 @@
 - name: master - kubectl - applying Calico to deal with the network
   shell: kubectl --kubeconfig=/etc/kubernetes/admin.conf create -f /root/calico.yaml
   register: kubernetes_calico
-  when: kubernetes_calico is not defined and inventory_hostname == kubernetes_master
+  when: kubernetes_calico is not defined and ansible_host == kubernetes_master
 
 - name: master - kubeadm - create token for workers
   shell: "kubeadm token create --print-join-command 2>/dev/null"
   register: kubernetes_join_cmd
-  when: inventory_hostname == kubernetes_master
+  when: ansible_host == kubernetes_master
 
 - name: master - kubeadm - set_fact kubernetes_join
   local_action: copy content="{{ kubernetes_join_cmd.stdout }}" dest="/tmp/kubernetes_token"
-  when: inventory_hostname == kubernetes_master
+  when: ansible_host == kubernetes_master
