@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 #
 
-ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 Vagrant.configure("2") do |config|
   config.vm.box = "debian/buster64"
   config.vm.synced_folder ".", "/vagrant", disabled: false
@@ -10,26 +10,26 @@ Vagrant.configure("2") do |config|
   (1..1).each do |i|
     config.vm.define "masternode#{i}" do |node|
       node.vm.hostname = "masternode#{i}.l4b"
-      node.vm.network "private_network", ip: "10.2.0.1#{i}"
+      node.vm.network "private_network", ip: "192.168.56.2#{i}"
 
-      node.vm.provider :libvirt do |domain|
-        domain.driver = "qemu"
-        domain.memory = 2024
-        domain.cpus = 2
-      end
+      #node.vm.provider :virtualbox do |domain|
+      #  domain.driver = "qemu"
+      #  domain.memory = 2024
+      #  domain.cpus = 2
+      #end
     end
   end
 
   (1..2).each do |j|
     config.vm.define "workernode#{j}" do |node|
       node.vm.hostname = "workernode#{j}.l4b"
-      node.vm.network "private_network", ip: "10.2.0.2#{j}"
+      node.vm.network "private_network", ip: "192.168.56.3#{j}"
 
-      node.vm.provider :libvirt do |domain|
-        domain.driver = "qemu"
-        domain.memory = 1024
-        domain.cpus = 1
-      end
+      #node.vm.provider :libvirt do |domain|
+      #  domain.driver = "qemu"
+      #  domain.memory = 1024
+      #  domain.cpus = 1
+      #end
     end
   end
 
