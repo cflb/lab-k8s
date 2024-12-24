@@ -5,7 +5,7 @@
     dest: /etc/resolv.conf
 
 - name: apt - upgrade and install packages
-  include: apt.yml
+  import_tasks: apt.yml
 
 - name: hosts - build /etc/hosts file with public endpoints
   lineinfile:
@@ -28,4 +28,4 @@
   shell: "mkdir -pv /kubernetes/storage"
 
 - name: tuned - machine performance and tuning
-  include: tuned.yml
+  import_tasks: tuned.yml

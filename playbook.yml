@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    #- role: common
+    - role: kubernetes
+    #- role: firewall
+  vars:
+    my_intranet:
+      - { host: "cpk8s01", ip: 10.1.0.101 }
+      

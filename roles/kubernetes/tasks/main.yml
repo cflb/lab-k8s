@@ -1,9 +1,8 @@
 ---
-- include_tasks: setup.yml
+- import_tasks: setup.yml
 
-- include_tasks: master.yml
-  when: ansible_host == kubernetes_master
-
-- include_tasks: node.yml
-  when: inventory_hostname in groups['workers']
-  
+- import_tasks: master.yml
+  when: inventory_hostname in groups['master_root']
+#
+#- include: node.yml
+#  when: inventory_hostname in groups['kube_node']

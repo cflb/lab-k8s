@@ -1,9 +1,4 @@
 ---
-- name: configure name servers
-  copy:
-    src: resolv.conf
-    dest: /etc/resolv.conf
-
 - name: copy k8s.mod.conf
   copy:
     src: k8s.mod.conf
@@ -25,19 +20,25 @@
   register: init_kubernetes
   changed_when: "init_kubernetes.rc != 0"
 
-- name: copy sources.list
-  copy:
-    src: kubernetes.list
-    dest: /etc/apt/sources.list.d/kubernetes.list
-    owner: root
-    group: root
-    mode: '0644'
+- name: setup keyrings
+  ansible.builtin.shell:
+    cmd: mkdir -p /etc/apt/keyrings/
 
-- name: apt - downloading gpg key
-  shell: (wget -qO /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg; wget -qO- https://download.docker.com/linux/debian/gpg | apt-key add -)
-  register: apt_key
-  changed_when: "apt_key.rc != 0"
+- name: reset keyrings
+  ansible.builtin.shell:
+    cmd: rm -rf /etc/apt/keyrings/
 
+- name: create keyrings directory
+  ansible.builtin.shell:
+    cmd: mkdir -p /etc/apt/keyrings/
+
+- name: add apt-key
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+- name: add kubernetes list
+  ansible.builtin.shell:
+    cmd: echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
 - name: apt - update sources list
   apt:
@@ -52,15 +53,17 @@
   shell: "apt-mark hold kubelet kubeadm kubectl"
 
 - name: containerd - initial configuration
-  shell: (containerd config default | tee /etc/containerd/config.toml)
-
-- name: containerd - commenting disabled_plugins, allowing CRI assume
-  replace:
+  template:
+    src: containerd/config.toml
     dest: /etc/containerd/config.toml
-    regexp: '^(disabled_plugins.*)$'
-    replace: '#\1'
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: restart containerd
   service:
     name: "containerd"
     state: "restarted"
+
+# - include_tasks: nsf-server.yml
+#   when: inventory_hostname in groups['cinsfserver']
