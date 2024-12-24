@@ -1,66 +1,28 @@
-# Laboratório kubernetes com Vagrant + ansible
+# Lab kubernetes
 
-Uma base inicial para rodar um pequeno cluster baseado em maquinas virtuais usando ***Vagrant***.
+## Use to: Vagrant + linux + ansible + kubernetes + helm + cicd
 
-Também é usado ```ansible``` para o gerenciamento de configuração de todo nosso lab.
-
-## Dependências
+## Requirements
 - Vagrant
 - ansible
+- virtualbox
 
-## Vagrant
+# Running k8s cluster
 
-O HashiCorp Vagrant é usado para criar e manter ambientes de desenvolvimento virtuais, para isso pode ser utilizado:
-- VirtualBox
-- KVM
-- Hyper-V
-- Docker containers
-- VMware
-- AWS
-
-Com ele será mas rápido subir VMs e manter uma gerência de configuração das virtualizações para aumentar a produtividade do desenvolvimento.
-
-Uma coisa legal de se usar vagrant é poder manter nossos Labs usando ***infraestructure as code***
-
-## Como usar?
-
-### Passo 1
-Para criar as maquinas use: ***vagrant up***
-Se tudo correr bem, um diretorio .vagrant será criado, navege nele até o diretorio ```.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory```
-### Passo 2 
-Copie este arquivo ***vagrant_ansible_inventory*** renomeando o arquivo para ***inventory***.
-
-> cp .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory inventory
-
-### Passo 3
-Verifique o conteudo do arquivo ***inventory***. Nele está os IPs das máquinas que foram provisionadas pelo vagrant. Agora copie e guarde o valor do endereço IP da maquina ***masternode1***, vamos precisar deste endereço.
-
-### Passo 4
-Abra o arquivo da playbook ***kubernetes.yaml*** e também ***roles/kubernetes/defaults/main.yml*** procure a variável ***kubernetes_master*** e cole o valor do IP copiado no passo anterior em ambos os arquivos e salve.
+Just use:
 
 ```
-    kubernetes_master: 192.168.121.107
+vagrant up cpk8s01
+vagrant ssh cpk8s01
+sudo -i
+kubernetes get nodes -o wide --kubeconfig /etc/kubernetes/admin.conf
 ```
 
-### Passo 5
-Para provisionar o nosso ***cluster kubernetes*** vamos usar a playbook ***kubernetes.yaml***.  Esta playbook ira rodar algumas roles, que estão no diretrório ```roles/```, vejamos:
+You can copy ```/etc/kubernetes/admin.conf``` for you host. You can create a simple directory to storage the kubernetes config file. By default the name of this directory is ***.kube*** (is a hide dir) and the name of the file is ***config***. The result will should be  ```$HOME/.kube/config```
 
-> tree roles -L 2
-```
-roles
-├── common
-│   ├── defaults
-│   ├── files
-│   ├── tasks
-│   └── templates
-└── kubernetes
-    ├── defaults
-    ├── files
-    └── tasks
-```
+Now your cluster is ready.
 
-### Passo 6
+# You can explorer anothers things in this Lab
 
-Execute a playbook. 
+## Monitoring services
 
-> ansible-playbook -u vagrant -i inventory kubernetes.yaml
