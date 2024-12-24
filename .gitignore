@@ -1,3 +1,4 @@
 .vagrant
 k8s-vagrant-libvirt
 inventory
+nfs.yaml
