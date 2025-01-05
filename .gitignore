@@ -1,4 +1,7 @@
 .vagrant
 k8s-vagrant-libvirt
 inventory
+
 nfs.yaml
+applications/
+kube-prometheus-0.14.0
