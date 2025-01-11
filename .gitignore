@@ -5,3 +5,5 @@ inventory
 nfs.yaml
 applications/
 kube-prometheus-0.14.0
+kube-prometheus-stack
+my-stack/

@@ -4,11 +4,11 @@
 
 ## Provide a name in place of kube-prometheus-stack for `app:` labels
 ##
-nameOverride: "kps"
+nameOverride: ""
 
 ## Override the deployment namespace
 ##
-namespaceOverride: "monitoring"
+namespaceOverride: ""
 
 ## Provide a k8s version to auto dashboard import script example: kubeTargetVersionOverride: 1.26.6
 ##
@@ -1003,7 +1003,7 @@ alertmanager:
 ##
 grafana:
   enabled: true
-  namespaceOverride: "monitoring"
+  namespaceOverride: ""
 
   ## ForceDeployDatasources Create datasource configmap even if grafana deployment has been disabled
   ##
@@ -1058,8 +1058,7 @@ grafana:
     ##
     # hosts:
     #   - grafana.domain.com
-    hosts: 
-      - grafana.ops.local
+    hosts: []
 
     ## Path for grafana ingress
     path: /
@@ -2719,6 +2718,10 @@ prometheusOperator:
     automountServiceAccountToken: true
     annotations: {}
 
+  # -- terminationGracePeriodSeconds for container lifecycle hook
+  terminationGracePeriodSeconds: 30
+  # -- Specify lifecycle hooks for the  controller
+  lifecycle: {}
   ## Configuration for Prometheus operator service
   ##
   service:
